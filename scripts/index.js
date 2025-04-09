@@ -25,11 +25,11 @@ function deleteCard(card) {
 }
 
 // @todo: Вывести карточки на страницу
-function renderCard() {
+function renderCards() {
     initialCards.forEach((item)=> {
         const card = createCard(item.name, item.link, deleteCard);
         cardList.append(card);
     })
 }
 
-renderCard();
+renderCards();
