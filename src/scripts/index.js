@@ -1,34 +1,11 @@
 import images from '../components/images.js';
+import initialCards from './cards.js';
 import '../pages/index.css';
+import { openModal, closeModal, setModalEventListeners } from '../components/modal.js';
+import { createCard } from '../components/card.js';
 
-// @todo: Темплейт карточки
-const cardTemplate = document.querySelector('#card-template').content;
-
-// @todo: DOM узлы
 const cardList = document.querySelector('.places__list');
 
-// @todo: Функция создания карточки
-function createCard(name, link, deleteCard) {
-    const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
-    const cardImage = cardElement.querySelector('.card__image');
-
-    cardElement.querySelector('.card__title').textContent = name;
-    cardImage.src = link;
-    cardImage.alt = name;
-    
-    const deleteButton = cardElement.querySelector('.card__delete-button')
-    deleteButton.addEventListener('click', () => {
-        deleteCard(cardElement);
-    });
-    return cardElement;
-}
-
-// @todo: Функция удаления карточки
-function deleteCard(card) {
-    card.remove();
-}
-
-// @todo: Вывести карточки на страницу
 function renderCards() {
     initialCards.forEach((item)=> {
         const card = createCard(item.name, item.link, deleteCard);
@@ -37,3 +14,26 @@ function renderCards() {
 }
 
 renderCards();
+
+const addButton = document.querySelector('.profile__add-button');
+const editButton = document.querySelector('.profile__edit-button');
+
+const modalNewCard = document.querySelector('.popup_type_new-card');
+const modalEditProfile = document.querySelector('.popup_type_edit');
+const modalImage = document.querySelector('.popup_type_image');
+
+[modalNewCard, modalEditProfile, modalImage].forEach((modal) => {
+    modal.addEventListener('click', (e) => {
+        if (e.target.classList.contains('popup__close') || e.target.classList.contains('popup')) {
+            closeModal(modal);
+        }
+    })
+});
+
+addButton.addEventListener('click', () => {
+    openModal(modalNewCard);
+});
+
+editButton.addEventListener('click', () => {
+    openModal(modalEditProfile);
+});
