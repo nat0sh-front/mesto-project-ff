@@ -1,6 +1,9 @@
-// @todo: Функция создания карточки
-function createCard(name, link, deleteCard, likeCard, openModalImage) {
-  const cardTemplate = document.querySelector("#card-template").content;
+const cardTemplate = document.querySelector("#card-template").content;
+
+function createCard(cardData, callbacks) {
+  const { name, link } = cardData;
+  const { deleteCard, likeCard, openModalImage } = callbacks;
+  
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
   const cardImage = cardElement.querySelector(".card__image");
 
