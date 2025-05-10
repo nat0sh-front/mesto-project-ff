@@ -5,15 +5,15 @@ import { createCard, handleDelete, handleLike } from "./card.js";
 
 const cardList = document.querySelector(".places__list");
 
-const modalImageElement = modalImage.querySelector(".popup__image");
-const modalCaptionElement = modalImage.querySelector(".popup__caption");
-
 const editButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");
 
 const modalEditProfile = document.querySelector(".popup_type_edit");
 const modalNewCard = document.querySelector(".popup_type_new-card");
 const modalImage = document.querySelector(".popup_type_image");
+
+const modalImageElement = modalImage.querySelector(".popup__image");
+const modalCaptionElement = modalImage.querySelector(".popup__caption");
 
 const nameElement = document.querySelector(".profile__title");
 const jobElement = document.querySelector(".profile__description");
