@@ -1,5 +1,5 @@
 // @todo: Функция создания карточки
-export function createCard(name, link, deleteCard, likeCard, openModalImage) {
+function createCard(name, link, deleteCard, likeCard, openModalImage) {
   const cardTemplate = document.querySelector("#card-template").content;
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
   const cardImage = cardElement.querySelector(".card__image");
@@ -24,3 +24,15 @@ export function createCard(name, link, deleteCard, likeCard, openModalImage) {
 
   return cardElement;
 }
+
+function handleDelete(card) {
+  card.remove();
+}
+
+function handleLike(e) {
+  if (e.target.classList.contains("card__like-button")) {
+    e.target.classList.toggle("card__like-button_is-active");
+  }
+}
+
+export { createCard, handleDelete, handleLike };

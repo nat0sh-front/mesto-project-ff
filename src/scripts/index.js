@@ -1,20 +1,10 @@
 import "../pages/index.css";
 import initialCards from "./cards.js";
 import { openModal, closeModal } from "../components/modal.js";
-import { createCard } from "../components/card.js";
+import { createCard, handleDelete, handleLike } from "../components/card.js";
 
 //Card
 const cardList = document.querySelector(".places__list");
-
-function handleDelete(card) {
-  card.remove();
-}
-
-function handleLike(e) {
-  if (e.target.classList.contains("card__like-button")) {
-    e.target.classList.toggle("card__like-button_is-active");
-  }
-}
 
 function handleOpenModalImage(name, link) {
   const popupImage = modalImage.querySelector(".popup__image");
