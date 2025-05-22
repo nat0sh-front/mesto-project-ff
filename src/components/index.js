@@ -2,6 +2,7 @@ import "../pages/index.css";
 import initialCards from "./cards.js";
 import { openModal, closeModal } from "./modal.js";
 import { createCard, handleDelete, handleLike } from "./card.js";
+import { enableValidation, clearValidation } from "./validation.js";
 
 const cardList = document.querySelector(".places__list");
 
@@ -25,6 +26,15 @@ const jobInput = formEditProfile.querySelector(".popup__input_type_description")
 const formNewCard = modalNewCard.querySelector(".popup__form");
 const cardNameInput = formNewCard.querySelector(".popup__input_type_card-name");
 const cardImageLinkInput = formNewCard.querySelector(".popup__input_type_url");
+
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_active'
+}
 
 function handleOpenModalImage(name, link) {
   modalImageElement.src = link;
@@ -89,10 +99,12 @@ function handleFormNewCardSubmit(e) {
 editButton.addEventListener("click", () => {
   nameInput.value = nameElement.textContent;
   jobInput.value = jobElement.textContent;
+  clearValidation(modalEditProfile, validationConfig);
   openModal(modalEditProfile);
 });
 
 addButton.addEventListener("click", () => {
+  clearValidation(modalNewCard, validationConfig);
   openModal(modalNewCard);
 });
 
@@ -100,3 +112,4 @@ formEditProfile.addEventListener("submit", handleFormEditProfileSubmit);
 formNewCard.addEventListener("submit", handleFormNewCardSubmit);
 
 renderCards();
+enableValidation(validationConfig);
