@@ -1,4 +1,4 @@
-import { deleteCardAPI, likeCard, unlikeCard } from './api.js';
+import { deleteCardAPI, likeCard, unlikeCard } from "./api.js";
 
 const cardTemplate = document.querySelector("#card-template").content;
 
@@ -17,16 +17,22 @@ function createCard(cardData, callbacks) {
   cardImage.alt = name;
   likeCountElement.textContent = likes.length;
 
-  if (likes.some(user => user._id === currentUserId)) {
+  if (likes.some((user) => user._id === currentUserId)) {
     likeButton.classList.add("card__like-button_is-active");
   }
 
   if (ownerId !== currentUserId) {
-    deleteButton.style.display = 'none';
+    deleteButton.style.display = "none";
   }
 
   deleteButton.addEventListener("click", () => {
-    handleDelete(_id, cardElement, deleteCard);
+    deleteCardAPI(_id)
+      .then(() => {
+        deleteCard(cardElement);
+      })
+      .catch((err) => {
+        console.error("Ошибка при удалении карточки:", err);
+      });
   });
 
   likeButton.addEventListener("click", (e) => {
@@ -40,11 +46,8 @@ function createCard(cardData, callbacks) {
   return cardElement;
 }
 
-function handleDelete(cardId, cardElement, deleteCardCallback) {
-  deleteCardAPI(cardId)
-    .then(() => {
-      deleteCardCallback(cardElement);
-    })
+function handleDelete(card) {
+  card.remove();
 }
 
 function handleLike(e, cardId, likeCountElement) {
@@ -57,6 +60,9 @@ function handleLike(e, cardId, likeCountElement) {
       likeButton.classList.toggle("card__like-button_is-active");
       likeCountElement.textContent = updatedCard.likes.length;
     })
+    .catch((err) => {
+      console.error("Ошибка при лайке карточки:", err);
+    });
 }
 
 export { createCard, handleDelete, handleLike };
