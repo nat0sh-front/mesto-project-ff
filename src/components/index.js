@@ -1,8 +1,8 @@
 import "../pages/index.css";
-import initialCards from "./cards.js";
 import { openModal, closeModal } from "./modal.js";
 import { createCard, handleDelete, handleLike } from "./card.js";
 import { enableValidation, clearValidation } from "./validation.js";
+import { addNewCard, editUserInfo, getInitialCards, getUserInfo } from "./api.js";
 
 const cardList = document.querySelector(".places__list");
 
@@ -18,6 +18,7 @@ const modalCaptionElement = modalImage.querySelector(".popup__caption");
 
 const nameElement = document.querySelector(".profile__title");
 const jobElement = document.querySelector(".profile__description");
+const imageElement = document.querySelector(".profile__image");
 
 const formEditProfile = modalEditProfile.querySelector(".popup__form");
 const nameInput = formEditProfile.querySelector(".popup__input_type_name");
@@ -46,9 +47,23 @@ function handleOpenModalImage(name, link) {
 }
 
 function renderCards() {
-  initialCards.forEach((item) => {
+  Promise.all([getUserInfo(), getInitialCards()])
+  .then(([user, initialCards])=>{
+    console.log(user);
+    nameElement.textContent = user.name;
+    jobElement.textContent = user.about;
+    imageElement.src = user.avatar;
+
+    initialCards.forEach((item) => {
     const card = createCard(
-      { name: item.name, link: item.link },
+      { 
+        name: item.name,
+        link: item.link,
+        _id: item._id,
+        ownerId: item.owner._id,
+        likes: item.likes,
+        currentUserId: user._id 
+      },
       {
         deleteCard: handleDelete,
         likeCard: handleLike,
@@ -56,7 +71,8 @@ function renderCards() {
       }
     );
     cardList.append(card);
-  });
+    });
+  })
 }
 
 function editProfile(nameValue, jobValue) {
@@ -66,14 +82,25 @@ function editProfile(nameValue, jobValue) {
 
 function handleFormEditProfileSubmit(e) {
   e.preventDefault();
+  editUserInfo(nameInput.value, jobInput.value);
   editProfile(nameInput.value, jobInput.value);
   closeModal(modalEditProfile);
 }
 
 function handleFormNewCardSubmit(e) {
   e.preventDefault();
+  addNewCard(cardNameInput.value, cardImageLinkInput.value)
+  .then((cardFromAPI)=>{
+    console.log(cardFromAPI);
   const newCard = createCard(
-    { name: cardNameInput.value, link: cardImageLinkInput.value },
+    { 
+      name: cardFromAPI.name, 
+      link: cardFromAPI.link,
+      _id: cardFromAPI._id,
+      ownerId: cardFromAPI.ownerId,
+      likes: cardFromAPI.likes,
+      currentUserId: cardFromAPI.currentUserId
+    },
     {
       deleteCard: handleDelete,
       likeCard: handleLike,
@@ -83,6 +110,7 @@ function handleFormNewCardSubmit(e) {
   cardList.prepend(newCard);
   formNewCard.reset();
   closeModal(modalNewCard);
+  })
 }
 
 [modalEditProfile, modalNewCard, modalImage].forEach((modal) => {
