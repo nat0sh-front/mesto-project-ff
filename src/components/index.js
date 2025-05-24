@@ -195,11 +195,14 @@ editInfoButton.addEventListener("click", () => {
 
 editAvatarButton.addEventListener("click", () => {
   clearValidation(modalEditAvatar, validationConfig);
+  avatarLinkInput.value = "";
   openModal(modalEditAvatar);
 });
 
 addButton.addEventListener("click", () => {
   clearValidation(modalNewCard, validationConfig);
+    nameInput.value = "";
+    cardImageLinkInput.value = "";
   openModal(modalNewCard);
 });
 

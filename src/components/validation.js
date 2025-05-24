@@ -68,7 +68,6 @@ function clearValidation(formElement, validationConfig) {
 
   inputList.forEach((inputElement) => {
     hideError(formElement, inputElement, validationConfig);
-    inputElement.value = "";
   });
 
   toggleButtonState(inputList, buttonElement, validationConfig);
