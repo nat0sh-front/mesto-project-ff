@@ -96,8 +96,8 @@ function editAvatar(linkValue) {
 function handleFormEditProfileSubmit(e) {
   e.preventDefault();
   editUserInfo(nameInput.value, jobInput.value)
-    .then(() => {
-      editProfile(nameInput.value, jobInput.value);
+    .then((userData) => {
+      editProfile(userData.name, userData.about);
       closeModal(modalEditProfile);
     })
     .catch((err) => {
@@ -109,8 +109,8 @@ function handleFormEditAvatarSubmit(e) {
   e.preventDefault();
   toggleButtonLoading(formEditAvatar, true);
   editUserAvatar(avatarLinkInput.value)
-    .then(() => {
-      editAvatar(avatarLinkInput.value);
+    .then((userData) => {
+      editAvatar(userData.avatar);
       closeModal(modalEditAvatar);
     })
     .catch((err) => {
@@ -125,15 +125,15 @@ function handleFormNewCardSubmit(e) {
   e.preventDefault();
   toggleButtonLoading(formNewCard, true);
   addNewCard(cardNameInput.value, cardImageLinkInput.value)
-    .then((cardFromAPI) => {
+    .then((dataCard) => {
       const newCard = createCard(
         {
-          name: cardFromAPI.name,
-          link: cardFromAPI.link,
-          _id: cardFromAPI._id,
-          ownerId: cardFromAPI.ownerId,
-          likes: cardFromAPI.likes,
-          currentUserId: cardFromAPI.currentUserId,
+          name: dataCard.name,
+          link: dataCard.link,
+          _id: dataCard._id,
+          ownerId: dataCard.ownerId,
+          likes: dataCard.likes,
+          currentUserId: dataCard.currentUserId,
         },
         {
           deleteCard: handleDelete,
