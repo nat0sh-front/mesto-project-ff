@@ -10,6 +10,7 @@ function hideError(formElement, inputElement, validationConfig) {
   inputElement.classList.remove(validationConfig.inputErrorClass);
   errorElement.textContent = "";
   errorElement.classList.remove(validationConfig.errorClass);
+  inputElement.setCustomValidity("");
 }
 
 function checkInputValidity(formElement, inputElement, validationConfig) {
@@ -41,9 +42,6 @@ function setEventListener(formElement, validationConfig) {
 function enableValidation(validationConfig) {
   const formList = Array.from(document.querySelectorAll(validationConfig.formSelector));
   formList.forEach((formElement)=>{
-    formElement.addEventListener('submit', function(evt) {
-      evt.preventDefault();
-    });
     setEventListener(formElement, validationConfig);
   });
 }
@@ -74,6 +72,5 @@ function clearValidation(formElement, validationConfig) {
 
   toggleButtonState(inputList, buttonElement, validationConfig);
 }
-
 
 export {enableValidation, clearValidation};
